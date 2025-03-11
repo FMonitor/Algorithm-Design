@@ -11,8 +11,8 @@ cpp_program = "./Algorithms.exe"
 
 algorithms = ["selection", "bubble", "insertion", "merge", "quick"]
 
-size = 10000000
-test_times = 1
+size = 100000
+test_times = 20
 
 def run_benchmark(algorithm, size):
     start_time = time.time()
@@ -24,10 +24,25 @@ results = []
 for i in range(len(algorithms)):
     results.append(0)
 
+# 读取保存的数据，如果存在的话跳过已有的数据
+read_txt = []
+if os.path.exists("benchmarkResult20avg.txt"):
+    with open("benchmarkResult20avg.txt", "r") as f:
+        read_txt = f.readlines()
+
 for alg in algorithms:
     i = algorithms.index(alg)
     for j in range(test_times):
         print(f"running {alg} sort {j + 1} times")
+        # 如果已有数据则跳过
+        find = False
+        for k in range(len(read_txt)):
+            if f"{alg}:" in read_txt[k]:
+                results[i] += float(read_txt[k].split(" ")[1])
+                find = True
+        
+        if find:
+            continue
         time_taken = run_benchmark(alg, size)
         results[i] += time_taken
         
@@ -46,7 +61,7 @@ results = np.log(results)
 plt.figure(figsize=(10, 6))
 plt.bar(algorithms, results)
 plt.xlabel("Sorting Algorithm")
-plt.ylabel("Time (seconds)")
+plt.ylabel("Time (log sec)")
 plt.title("Sorting Algorithm Performance")
 plt.grid()
 plt.savefig("benchmarkResult20avg.png")
