@@ -11,7 +11,7 @@ cpp_program = "./Algorithms.exe"
 
 algorithms = ["selection", "bubble", "insertion", "merge", "quick"]
 
-size = 100000
+size = 1000000
 test_times = 20
 
 def run_benchmark(algorithm, size):
@@ -56,13 +56,15 @@ with open("benchmarkResult20avg.txt", "w") as f:
         f.write(f"{algorithms[i]}: {results[i]}\n")
 
 # 获取log后的时间
-results = np.log(results)
+results = np.log10(results)
 
 plt.figure(figsize=(10, 6))
 plt.bar(algorithms, results)
-plt.xlabel("Sorting Algorithm")
-plt.ylabel("Time (log sec)")
-plt.title("Sorting Algorithm Performance")
+plt.xlabel("Sorting Algorithm",fontsize=16)
+plt.ylabel("Time (log10 sec)",fontsize=16)
+plt.title("Sorting Algorithm Performance",fontsize=20)
 plt.grid()
+plt.xticks(fontsize=12) 
+plt.yticks(fontsize=12)
 plt.savefig("benchmarkResult20avg.png")
 plt.show()

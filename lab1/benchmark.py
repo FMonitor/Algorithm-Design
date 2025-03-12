@@ -5,6 +5,7 @@ import time
 import os
 import sys
 
+
 os.chdir(sys.path[0])
 
 cpp_program = "./Algorithms"
@@ -70,7 +71,7 @@ with open("benchmarkResult.txt", "w") as f:
         f.write("\n")   
 
 # 对数处理size
-sizes = np.log(sizes)  
+sizes = np.log10(sizes)  
 
 plt.figure(figsize=(10, 6))
 for alg in algorithms:

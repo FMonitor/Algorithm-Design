@@ -6,6 +6,12 @@
 using namespace std;
 using namespace std::chrono;
 
+void swap(int& a, int& b) {
+    a ^= b;
+    b ^= a;
+    a ^= b;
+}
+
 void selectionSort(vector<int>& arr) {
     int n = arr.size();
     for (int i = 0; i < n - 1; i++) {
