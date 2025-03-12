@@ -110,11 +110,6 @@ void quickSort(vector<int>& arr, int low, int high) {
 
 
 int main(int argc, char* argv[]) {
-    if (argc != 3) {
-        cerr << "Usage: " << argv[0] << " <algorithm> <size>" << endl;
-        cerr << "Algorithms: selection, bubble, insertion, merge, quick" << endl;
-        return 1;
-    }
 
     string algorithm = argv[1];
     int size = atoi(argv[2]);

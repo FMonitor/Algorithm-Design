@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
+using namespace std::chrono;
 
-void optimizedTopk(vector<int>& arr, int k) {
+vector<int> heapTopk(vector<int>& arr, int k) {
     priority_queue<int, vector<int>, greater<int>> pq;
     for (int i = 0; i < k; i++) {
         pq.push(arr[i]);
@@ -12,14 +13,17 @@ void optimizedTopk(vector<int>& arr, int k) {
             pq.push(arr[i]);
         }
     }
-    while (priority_queue.size() != 0) {
-        cout << pq.top() << " ";
+    vector<int> result;
+    while (!pq.empty()) {
+        result.push_back(pq.top());
         pq.pop();
     }
+    return result;
 }
 
-void simpleTopk(vector<int>& arr, int k) {
-    for(int i = 0; i < 10; i++) {
+vector<int> simpleTopk(vector<int>& arr, int k) {
+    vector<int> result;
+    for (int i = 0; i < 10; i++) {
         int max = 0;
         int maxindex = 0;
         for (int j = 0; j < arr.size(); j++) {
@@ -28,8 +32,47 @@ void simpleTopk(vector<int>& arr, int k) {
                 maxindex = j;
             }
         }
-        cout << max << " ";
+        result.push_back(max);
         arr[maxindex] = 0;
+    }
+    return result;
+}
+
+
+vector<int> quickTopk(vector<int>& nums, int k) {
+    if (nums.size() <= k) {
+        return nums;
+    }
+
+    // 随机选择基准元素
+    srand(time(0));
+    int pivot = nums[rand() % nums.size()];
+
+    // 分区
+    vector<int> greater, equal, less;
+    for (int num : nums) {
+        if (num > pivot) {
+            greater.push_back(num);
+        } else if (num == pivot) {
+            equal.push_back(num);
+        } else {
+            less.push_back(num);
+        }
+    }
+
+    // 递归处理
+    if (greater.size() >= k) {
+        return quickTopk(greater, k);
+    } else if (greater.size() + equal.size() >= k) {
+        vector<int> result = greater;
+        result.insert(result.end(), equal.begin(), equal.end());
+        return vector<int>(result.begin(), result.begin() + k);
+    } else {
+        vector<int> result = greater;
+        result.insert(result.end(), equal.begin(), equal.end());
+        vector<int> lessResult = quickTopk(less, k - greater.size() - equal.size());
+        result.insert(result.end(), lessResult.begin(), lessResult.end());
+        return result;
     }
 }
 
@@ -46,11 +89,13 @@ int main(int argc, char* argv[]) {
 
     // 计时
     auto start = high_resolution_clock::now();
-
-    if (algorithm == "simple") {
-        simpleTopk(arr, 10);
-    } else if (algorithm == "optimized") {
-        optimizedTopk(arr, 10);
+    vector<int> result;
+    if (algorithm == "simpleTopk") {
+        result = simpleTopk(arr, 10);
+    } else if (algorithm == "heapTopk") {
+        result = heapTopk(arr, 10); 
+    } else if (algorithm == "quickTopk") {
+        result = quickTopk(arr, 10);
     } else {
         cerr << "Invalid algorithm: " << algorithm << endl;
         return 1;
