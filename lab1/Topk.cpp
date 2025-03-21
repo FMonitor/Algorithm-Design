@@ -77,15 +77,23 @@ vector<int> quickTopk(vector<int>& nums, int k) {
 }
 
 int main(int argc, char* argv[]) {
-
+    // 用于检测随机数生成是否正确
+    // freopen("Topk100samples.txt", "w", stdout);
     string algorithm = argv[1];
     int size = atoi(argv[2]);
+
+    // string algorithm = "simpleTopk";
+    // int size = 1000000;
 
     // 生成随机数组
     vector<int> arr(size);
     for (int i = 0; i < size; i++) {
         arr[i] = rand();
+        if(i<100){
+            cout << arr[i] << " ";
+        }
     }
+    cout << endl;
 
     // 计时
     auto start = high_resolution_clock::now();
@@ -104,6 +112,5 @@ int main(int argc, char* argv[]) {
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(end - start);
 
-    cout << duration.count() << endl;
     return 0;
 }
