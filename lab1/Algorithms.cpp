@@ -14,15 +14,26 @@ void swap(int& a, int& b) {
 
 void selectionSort(vector<int>& arr) {
     int n = arr.size();
-    for (int i = 0; i < n - 1; i++) {
+    for (int i = 0; i < n / 2; i++) {
         int minIndex = i;
-        for (int j = i + 1; j < n; j++) {
+        int maxIndex = i;
+        for (int j = i + 1; j < n - i; j++) {
             if (arr[j] < arr[minIndex]) {
                 minIndex = j;
+            }
+            if (arr[j] > arr[maxIndex]) {
+                maxIndex = j;
             }
         }
         if (minIndex != i) {
             swap(arr[i], arr[minIndex]);
+        }
+        // Adjust maxIndex if it was swapped with minIndex
+        if (maxIndex == i) {
+            maxIndex = minIndex;
+        }
+        if (maxIndex != n - i - 1) {
+            swap(arr[n - i - 1], arr[maxIndex]);
         }
     }
 }
