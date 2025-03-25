@@ -25,7 +25,7 @@ cpp_program = "./Algorithms.exe"
 algorithms_n2 = ["selection", "bubble", "insertion"]
 algorithms_nln = ["merge", "quick"]
 
-sizes_n2 = [10000,20000,30000,40000,50000,60000,70000,80000]
+sizes_n2 = [5000,7500,10000,25000,50000,75000,100000,125000,150000]
 sizes_nln = [1000000,2000000,3000000,4000000,5000000,6000000,7000000,8000000,9000000,10000000]
 
 time_limit = 120
