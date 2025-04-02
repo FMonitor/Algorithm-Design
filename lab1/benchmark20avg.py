@@ -14,11 +14,13 @@ algorithms = ["selection", "bubble", "insertion", "merge", "quick"]
 size = 1000000
 test_times = 20
 
+
 def run_benchmark(algorithm, size):
     start_time = time.time()
     subprocess.run([cpp_program, algorithm, str(size)], check=True)
     end_time = time.time()
     return end_time - start_time
+
 
 results = []
 for i in range(len(algorithms)):
@@ -40,12 +42,12 @@ for alg in algorithms:
             if f"{alg}:" in read_txt[k]:
                 results[i] += float(read_txt[k].split(" ")[1])
                 find = True
-        
+
         if find:
             continue
         time_taken = run_benchmark(alg, size)
         results[i] += time_taken
-        
+
 
 for i in range(len(algorithms)):
     results[i] /= test_times
@@ -60,11 +62,11 @@ results = np.log10(results)
 
 plt.figure(figsize=(10, 6))
 plt.bar(algorithms, results)
-plt.xlabel("Sorting Algorithm",fontsize=16)
-plt.ylabel("Time (log10 sec)",fontsize=16)
-plt.title("Sorting Algorithm Performance",fontsize=20)
+plt.xlabel("Sorting Algorithm", fontsize=16)
+plt.ylabel("Time (log10 sec)", fontsize=16)
+plt.title("Sorting Algorithm Performance", fontsize=20)
 plt.grid()
-plt.xticks(fontsize=12) 
+plt.xticks(fontsize=12)
 plt.yticks(fontsize=12)
 plt.savefig("benchmarkResult20avg.png")
 plt.show()

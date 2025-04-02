@@ -12,10 +12,62 @@ cpp_program = "./Algorithms"
 
 algorithms = ["selection", "bubble", "insertion", "merge", "quick"]
 
-sizes = [10000,20000,30000,40000,50000,60000,70000,80000,90000,100000,200000,300000,400000,500000,600000,700000,800000,900000,1000000,1500000,2000000,2500000,3000000,3500000,4000000,4500000,5000000,6000000,7000000,8000000,9000000,10000000,15000000,20000000,25000000,30000000,35000000,40000000,45000000,50000000,55000000,60000000,65000000,70000000,75000000,80000000,85000000,90000000,95000000,100000000]
+sizes = [
+    10000,
+    20000,
+    30000,
+    40000,
+    50000,
+    60000,
+    70000,
+    80000,
+    90000,
+    100000,
+    200000,
+    300000,
+    400000,
+    500000,
+    600000,
+    700000,
+    800000,
+    900000,
+    1000000,
+    1500000,
+    2000000,
+    2500000,
+    3000000,
+    3500000,
+    4000000,
+    4500000,
+    5000000,
+    6000000,
+    7000000,
+    8000000,
+    9000000,
+    10000000,
+    15000000,
+    20000000,
+    25000000,
+    30000000,
+    35000000,
+    40000000,
+    45000000,
+    50000000,
+    55000000,
+    60000000,
+    65000000,
+    70000000,
+    75000000,
+    80000000,
+    85000000,
+    90000000,
+    95000000,
+    100000000,
+]
 
 # 时间上限（秒）
 time_limit = 120
+
 
 def run_benchmark(algorithm, size):
     try:
@@ -26,22 +78,24 @@ def run_benchmark(algorithm, size):
             timeout=time_limit,
             check=True,
             capture_output=True,
-            text=True
+            text=True,
         )
         end_time = time.time()
         time_taken = end_time - start_time
         print(f"{algorithm} sort with size {size}: {time_taken:.4f} seconds")
         return time_taken
     except subprocess.TimeoutExpired:
-        print(f"{algorithm} sort with size {size}: Exceeded time limit of {time_limit} seconds")
+        print(
+            f"{algorithm} sort with size {size}: Exceeded time limit of {time_limit} seconds"
+        )
         return time_limit
+
 
 # 读取保存的数据，如果存在的话跳过已有的数据
 read_txt = []
 if os.path.exists("benchmarkResult.txt"):
     with open("benchmarkResult.txt", "r") as f:
         read_txt = f.readlines()
-
 
 
 results = {alg: [] for alg in algorithms}
@@ -56,7 +110,7 @@ for size in sizes:
                         results[alg].append(float(read_txt[i + j + 1].split()[1]))
                         find = True
                         break
-        
+
         if find:
             continue
         time_taken = run_benchmark(alg, size)
@@ -68,10 +122,10 @@ with open("benchmarkResult.txt", "w") as f:
         f.write(f"{alg}:\n")
         for i in range(len(sizes)):
             f.write(f"{sizes[i]} {results[alg][i]}\n")
-        f.write("\n")   
+        f.write("\n")
 
 # 对数处理size
-sizes = np.log10(sizes)  
+sizes = np.log10(sizes)
 
 plt.figure(figsize=(10, 6))
 for alg in algorithms:
