@@ -1,6 +1,9 @@
 import random
 import os
 
+# 设置随机数种子以确保可重复性
+random.seed(5)
+
 def rand_gen(n: int, lb: int = 0, ub: int = 100) -> list:
     """
     生成 n 个随机点对（x, y），x 和 y 的范围在 [lb, ub] 之间。
@@ -17,11 +20,15 @@ def rand_gen(n: int, lb: int = 0, ub: int = 100) -> list:
         os.makedirs(file_path)
     file_name = os.path.join(file_path, f"rand{n}.txt")
     points = set()  # 使用集合存储点对以避免重复
+    
     while len(points) < n:
         x = random.randint(lb, ub)
         y = random.randint(lb, ub)
         points.add((x, y))  # 集合会自动去重
 
+    #对点对进行排序，先按 x 排序，再按 y 排序
+    points = sorted(points, key=lambda point: (point[0], point[1]))
+    
     with open(file_name, "w") as f:
         f.write(f"Random point counts: {n}. Ranged within [{lb}, {ub}]\n")
         for x, y in points:
@@ -33,4 +40,4 @@ def rand_gen(n: int, lb: int = 0, ub: int = 100) -> list:
 
 
 if __name__ == "__main__":
-    rand_gen(10, 0, 100)
+    rand_gen(100, 0, 100)

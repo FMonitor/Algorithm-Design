@@ -1,5 +1,7 @@
 import math
 
+closest_pair = None
+min_dist = float("inf")
 
 def force_closest_pair(points):
     """
@@ -24,7 +26,7 @@ def force_closest_pair(points):
 
 def closest_strip(Y_prime, d):
     """
-    处理跨界区域 Y'，检查 y 轴排序后下方最多 6 个点。
+    检查 y 轴排序后下方最多 6 个点。
     """
     min_d = d
     closest_pair = None
@@ -43,11 +45,9 @@ def divide_closest_pair(Px, Py):
     """
     n = len(Px)
 
-    # 基础情况: 若点数较少，直接使用暴力搜索
     if n <= 3:
         return force_closest_pair(Px)
 
-    # 按 x 坐标划分左右子集
     mid = n // 2
     Lx, Rx = Px[:mid], Px[mid:]
     Ly, Ry = [], []
@@ -59,7 +59,6 @@ def divide_closest_pair(Px, Py):
         else:
             Ry.append(p)
 
-    # 递归求左右子集的最短距离
     dl, pair_l = divide_closest_pair(Lx, Ly)
     dr, pair_r = divide_closest_pair(Rx, Ry)
 
@@ -68,12 +67,8 @@ def divide_closest_pair(Px, Py):
     else:
         d, closest_pair = dr, pair_r
 
-    # 处理跨界区域，构造带状区域 Y'（左右扩展 d 内的点）
     strip = [p for p in Py if abs(p[0] - mid_x) < d]
-
-    # 检查带状区域的最近点对
     ds, pair_s = closest_strip(strip, d)
-
     if ds < d:
         return ds, pair_s
     else:
