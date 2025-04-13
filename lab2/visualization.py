@@ -5,8 +5,6 @@ import numpy as np
 import matplotlib
 import math
 
-
-
 def update_force(frame):
     """ 更新蛮力搜索的动画帧 """
     global best_dist, best_pair
@@ -120,6 +118,15 @@ def prepare_divide_frames(Px, Py, depth=0):
     # 带状区域内点的比较
     for i in range(len(strip)):
         for j in range(i+1, min(i+7, len(strip))):
+            frames_divide.append({
+                'type': 'strip_compare',
+                'points': Px,
+                'strip': strip,
+                'mid_x': mid_x,
+                'd': d,
+                'pair': (strip[i], strip[j]),
+                'depth': depth
+            })
             frames_divide.append({
                 'type': 'strip_compare',
                 'points': Px,
@@ -257,16 +264,12 @@ def update_divide(frame_idx):
     if final_best_pair:
         print(f"Current Best Distance: {final_best_dist}, Pair: {final_best_pair}")
 
-def run(_):
+def run():
     """
     主函数，运行蛮力法和分治法的可视化
     """
-    global points, ax, frames_divide, final_best_dist, final_best_pair, best_dist, best_pair,frames_divide  # 存储分治法的帧
-
-    # 设置中文字体和负号显示
+    global points, ax, frames_divide, final_best_dist, final_best_pair, best_dist, best_pair,frames_divide  
     matplotlib.rcParams['font.sans-serif'] = ['Microsoft YaHei']
-
-    # 生成随机点
     points = rand_gen(20, 0, 100)
 
     fig, ax = plt.subplots()
@@ -274,11 +277,10 @@ def run(_):
     ax.set_ylim(0, 100)
     ax.set_title("Closest Pair Visualization")
 
-    # 绘制所有点（黑色）
     for x, y in points:
         ax.scatter(x, y, color='black')
 
-    frames = []  # 存储动画帧
+    frames = [] 
     best_dist = float('inf')
     best_pair = None
 
@@ -314,4 +316,5 @@ def run(_):
 
     plt.show()
 
-run(0)
+if __name__ == "__main__":
+    run()   

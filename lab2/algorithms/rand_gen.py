@@ -2,7 +2,7 @@ import random
 import os
 
 # 设置随机数种子以确保可重复性
-random.seed(5)
+random.seed(10)
 
 def rand_gen(n: int, lb: int = 0, ub: int = 100) -> list:
     """
@@ -16,6 +16,7 @@ def rand_gen(n: int, lb: int = 0, ub: int = 100) -> list:
     :param ub: 随机点对的上界
     """
     file_path = "./lab2/data/"
+
     if not os.path.exists(file_path):
         os.makedirs(file_path)
     file_name = os.path.join(file_path, f"rand{n}.txt")
@@ -34,7 +35,7 @@ def rand_gen(n: int, lb: int = 0, ub: int = 100) -> list:
         for x, y in points:
             f.write(f"{x} {y}\n")
 
-    print(f"生成 {n} 个随机点对，范围在 [{lb}, {ub}] 之间，已保存到 {file_name}。")
+    # print(f"生成 {n} 个随机点对，范围在 [{lb}, {ub}] 之间，已保存到 {file_name}。")
 
     return list(points)
 

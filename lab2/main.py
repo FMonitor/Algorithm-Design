@@ -1,20 +1,22 @@
-import argparse
 import benchmark
 import visualization
 
 
-def main(mode: str = "visualize", num_points: list = [20]) -> None:
+def main(mode: str = "visualize", num_points: list = [20], repeat: int = 5) -> None:
     """"
     主函数，解析命令行参数并根据模式运行相应的功能。"
     """
     if mode == "benchmark":
-        benchmark.run(num_points)
+        benchmark.run(num_points, repeat)
     elif mode == "visualize":
-        visualization.run(num_points)
+        visualization.run()
 
 
+# 参数设置
 if __name__ == "__main__":
-    # mode = "benchmark"  # 默认模式为基准测试
-    mode = "visualize"  # 可视化模式下长度设置无效
-    num_points = [10, 100, 1000, 10000, 100000]
-    main(mode, num_points)
+    mode = "benchmark"
+    # mode = "visualize"
+    repeat = 5
+    num_points = [100, 250, 500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 7000, 8000, 10000, 12000, 14000, 16000, 18000, 20000, 30000, 40000, 50000, 60000, 75000, 100000, 150000,
+                  200000, 300000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000, 1200000, 1400000, 1600000, 1800000, 2000000]
+    main(mode, num_points, repeat)
