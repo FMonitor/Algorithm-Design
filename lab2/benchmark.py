@@ -45,16 +45,23 @@ def benchmark(algorithm_name: str, points: list, repeat: int = 3):
         raise ValueError(f"未知算法: {algorithm_name}")
 
     total_time = 0
-    result = None
+    result = [-1, None]  # 初始化结果为无效值
+    timeout = 120  
     for _ in range(repeat):
         start = time.perf_counter()
-        result = algo_map[algorithm_name](points)
+        try:
+            result = algo_map[algorithm_name](points)
+        except TimeoutError:
+            return timeout, result
         end = time.perf_counter()
-        total_time += (end - start)
+        elapsed_time = end - start
+        total_time += elapsed_time
+
+        if total_time > timeout:
+            return timeout, result
 
     avg_time = total_time / repeat
     return avg_time, result
-
 
 def run(point_sizes: list = [10, 100, 500, 1000, 5000, 10000], repeat: int = 5):
     """
@@ -72,11 +79,12 @@ def run(point_sizes: list = [10, 100, 500, 1000, 5000, 10000], repeat: int = 5):
         f.write(f"{'点数':<6}{'算法':<18}{'多次平均时间（秒）':<11}{'最近距离':<15}\n")
         f.write("-" * 65 + "\n")
         for size in point_sizes:
-            points = rand_gen(size, 0, 10000)
+            points = rand_gen(size, 0, 1000000)
             for algo in ["brute_force", "divide_and_conquer"]:
-                if size > 10000:
+                if size > 10000 and algo == "brute_force" or size > 200000 and algo == "divide_and_conquer":
                     repeat = 1
-                if algo == "brute_force" and size > 20000:
+                if algo == "brute_force" and size > 40000:
+                    results[algo][size] = 120.0000
                     continue
 
                 avg_time, (dist, _) = benchmark(algo, points, repeat=repeat)
