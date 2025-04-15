@@ -37,8 +37,9 @@ def benchmark(algorithm_name: str, points: list, repeat: int = 3):
     对指定算法进行多次运行测试，返回平均耗时与最短距离结果。
     """
     algo_map = {
-        "brute_force": force_closest_pair,
-        "divide_and_conquer": run_algoritm
+        "brute_force": "brute",
+        "divide_and_conquer": "divide",
+        "divide_and_conquer_optimized": "divide_optimized"
     }
 
     if algorithm_name not in algo_map:
@@ -50,7 +51,7 @@ def benchmark(algorithm_name: str, points: list, repeat: int = 3):
     for _ in range(repeat):
         start = time.perf_counter()
         try:
-            result = algo_map[algorithm_name](points)
+            result = run_algoritm(points, algo_map[algorithm_name])
         except TimeoutError:
             return timeout, result
         end = time.perf_counter()
@@ -72,7 +73,8 @@ def run(point_sizes: list = [10, 100, 500, 1000, 5000, 10000], repeat: int = 5):
 
     results = {
         "brute_force": {},
-        "divide_and_conquer": {}
+        "divide_and_conquer": {},
+        "divide_and_conquer_optimized": {}
     }
 
     with open("./lab2/logs/benchmark_results.txt", "w") as f:
@@ -80,17 +82,17 @@ def run(point_sizes: list = [10, 100, 500, 1000, 5000, 10000], repeat: int = 5):
         f.write("-" * 65 + "\n")
         for size in point_sizes:
             points = rand_gen(size, 0, 1000000)
-            for algo in ["brute_force", "divide_and_conquer"]:
-                if size > 10000 and algo == "brute_force" or size > 200000 and algo == "divide_and_conquer":
+            for algo in ["brute_force", "divide_and_conquer", "divide_and_conquer_optimized"]:
+                if size > 10000 and algo == "brute_force" or size > 200000 :
                     repeat = 1
                 if algo == "brute_force" and size > 40000:
                     results[algo][size] = 120.0000
                     continue
 
                 avg_time, (dist, _) = benchmark(algo, points, repeat=repeat)
-                print(f"{size:<8}{algo:<20}{avg_time:<20.6f}{dist:<15.4f}")
+                print(f"{size:<8}{algo:<30}{avg_time:<20.6f}{dist:<15.4f}")
                 results[algo][size] = avg_time
-                f.write(f"{size:<8}{algo:<20}{avg_time:<20.6f}{dist:<15.4f}\n")
+                f.write(f"{size:<8}{algo:<30}{avg_time:<20.6f}{dist:<15.4f}\n")
 
 
     # 绘制结果并保存时间数据到txt

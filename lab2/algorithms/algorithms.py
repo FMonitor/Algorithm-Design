@@ -3,6 +3,7 @@ import math
 closest_pair = None
 min_dist = float("inf")
 
+
 def force_closest_pair(points):
     """
     使用蛮力法求解最近点对问题。
@@ -24,22 +25,47 @@ def force_closest_pair(points):
     return min_dist, closest_pair
 
 
-def closest_strip(Y_prime, d):
+def closest_strip(strip, d,mid_x, optimized = False):
     """
-    检查 y 轴排序后下方最多 6 个点。
+    检查 y 轴排序后下方最多 6 个点,或执行优化算法：
+    在跨区域的条带中寻找最小距离点对。
+    只比较不同侧的最多 4 个点（d × d 区域内）。
     """
-    min_d = d
-    closest_pair = None
-    for i in range(len(Y_prime)):
-        for j in range(i + 1, min(i + 7, len(Y_prime))):
-            dist = math.dist(Y_prime[i], Y_prime[j])
-            if dist < min_d:
-                min_d = dist
-                closest_pair = (Y_prime[i], Y_prime[j])
-    return min_d, closest_pair
+    if(optimized):
+        min_d = d
+        closest_pair = None
+        n = len(strip)
+        for i in range(n):
+            p = strip[i]
+            count = 0  
+            for j in range(i + 1, n):
+                q = strip[j]
+                if (q[1] - p[1]) >= d:
+                    break
 
+                # 只比较处于 mid_x 另一侧的点
+                if (p[0] < mid_x and q[0] >= mid_x) or (p[0] >= mid_x and q[0] < mid_x):
+                    dist = math.dist(p, q)
+                    if dist < min_d:
+                        min_d = dist
+                        closest_pair = (p, q)
+                    count += 1
+                    if count >= 4:  # 最多比较 4 个点
+                        break
 
-def divide_closest_pair(Px, Py):
+        return min_d, closest_pair
+    else:
+        min_d = d
+        closest_pair = None
+        for i in range(len(strip)):
+            for j in range(i + 1, min(i + 7, len(strip))):
+                dist = math.dist(strip[i], strip[j])
+                if dist < min_d:
+                    min_d = dist
+                    closest_pair = (strip[i], strip[j])
+        return min_d, closest_pair
+
+def divide_closest_pair(Px, Py, optimized = False):
     """
     递归求解最近点对。
     """
@@ -68,7 +94,8 @@ def divide_closest_pair(Px, Py):
         d, closest_pair = dr, pair_r
 
     strip = [p for p in Py if abs(p[0] - mid_x) < d]
-    ds, pair_s = closest_strip(strip, d)
+    ds, pair_s = closest_strip(strip, d, mid_x, optimized)
+
     if ds < d:
         return ds, pair_s
     else:
@@ -90,7 +117,11 @@ def run_algoritm(points, algorithm="divide"):
     elif algorithm == "divide":
         Px = sorted(points, key=lambda p: p[0])  # 按 x 坐标排序
         Py = sorted(points, key=lambda p: p[1])  # 按 y 坐标排序
-        return divide_closest_pair(Px, Py)
+        return divide_closest_pair(Px, Py, False)
+    elif algorithm == "divide_optimized":
+        Px = sorted(points, key=lambda p: p[0])  # 按 x 坐标排序
+        Py = sorted(points, key=lambda p: p[1])  # 按 y 坐标排序
+        return divide_closest_pair(Px, Py, True)
     else:
         raise ValueError("Unsupported algorithm. Use 'brute' or 'divide'.")
 
