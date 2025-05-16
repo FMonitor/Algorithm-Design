@@ -1,0 +1,17 @@
+Algorithm,Success,Time(ms)
+Simple Backtrack,No,900001
+Min Conflict,No,900003
+DH,No,900001
+DH + Min Conflict,No,900002
+MRV,No,900010
+MRV + DH + MC,No,900008
+MRV + Min Conflict,No,900011
+MRV + DH,No,900012
+MRV + DH + MC + FC,No,900038
+Min Conflict + Forward Checking,No,900059
+Forward Checking,No,900068
+MRV + Forward Checking,No,900350
+MRV + DH + Forward Checking,No,900383
+MRV + Min Conflict + Forward Checking,No,900568
+DH + FC,No,901391
+DH + Min Conflict + FC,No,901599

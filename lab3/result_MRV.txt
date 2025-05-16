@@ -1,1 +1,0 @@
-Coloring failed or timed out. Time: 600004 ms

@@ -1,4 +1,4 @@
-Coloring successful. Time: 197047 ms
+Coloring successful. Time: 357790 ms
 Color assignment:
 Node 0: Color 5
 Node 1: Color 4

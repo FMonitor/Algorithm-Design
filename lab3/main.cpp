@@ -100,10 +100,10 @@ void runAlgorithm(
 }
 
 int main() {
-    string filename = ".\\map\\le450_5a.col";  
+    string filename = ".\\map\\le450_25a.col";  
     // string filename = "rand_map.col";  // 文件路径
-    int m = 5;                       // 指定颜色数
-    long long time_limit_ms = 600000;  // 时间限制
+    int m = 25;                       // 指定颜色数
+    long long time_limit_ms =900000; // 15分钟
 
     vector<vector<int>> graph;
     cout << "正在读取 .col 文件..." << endl;
@@ -124,7 +124,15 @@ int main() {
     threads.emplace_back(runAlgorithm, ref(graph), m, "MRV", mrv_backtrack, time_limit_ms);
     threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + Min Conflict", mrv_min_conflict_backtrack, time_limit_ms);
     threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + Forward Checking", mrv_forward_checking_backtrack, time_limit_ms);
-
+    threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + Min Conflict + Forward Checking", mrv_min_conflict_forward_checking_backtrack, time_limit_ms);
+    threads.emplace_back(runAlgorithm, ref(graph), m, "DH", dh_backtrack, time_limit_ms);
+    threads.emplace_back(runAlgorithm, ref(graph), m, "DH + Min Conflict", dh_min_conflict_backtrack, time_limit_ms);
+    threads.emplace_back(runAlgorithm, ref(graph), m, "DH + FC", dh_forward_checking_backtrack, time_limit_ms);
+    threads.emplace_back(runAlgorithm, ref(graph), m, "DH + Min Conflict + FC", dh_min_conflict_forward_checking_backtrack, time_limit_ms);
+    threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + DH", mrv_dh_backtrack, time_limit_ms);
+    threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + DH + Forward Checking", mrv_dh_forward_checking_backtrack, time_limit_ms);
+    threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + DH + MC", mrv_dh_mc_backtrack, time_limit_ms);
+    threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + DH + MC + FC", mrv_dh_mc_fc_backtrack, time_limit_ms);
 
 
     // 等待所有线程完成
