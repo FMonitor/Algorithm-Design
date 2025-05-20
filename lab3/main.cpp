@@ -100,10 +100,19 @@ void runAlgorithm(
 }
 
 int main() {
-    string filename = ".\\map\\le450_25a.col";  
-    // string filename = "rand_map.col";  // 文件路径
-    int m = 25;                       // 指定颜色数
-    long long time_limit_ms =900000; // 15分钟
+    // string filename = ".\\map\\le450_15b.col";  //第二问
+    // string filename = "rand_map_100_200.col";  // 第三问
+    // string filename = "rand_map_150_300.col";  
+    // string filename = "rand_map_200_400.col";
+    // string filename = "rand_map_250_500.col";
+    // string filename = "rand_map_300_600.col";
+    // string filename = "rand_map_350_700.col";
+    // string filename = "rand_map_400_800.col";
+    // string filename = "rand_map_450_900.col";
+    string filename = "rand_map_500_1000.col";
+    int m = 4;                       // 指定颜色数
+    // long long time_limit_ms =900000; // 15分钟
+    long long time_limit_ms = 10000; // 10秒
 
     vector<vector<int>> graph;
     cout << "正在读取 .col 文件..." << endl;
@@ -117,17 +126,17 @@ int main() {
 
     // 创建线程分别运行不同算法
     vector<thread> threads;
-    threads.emplace_back(runAlgorithm, ref(graph), m, "Simple Backtrack", simple_backtrack, time_limit_ms);
-    threads.emplace_back(runAlgorithm, ref(graph), m, "Min Conflict", min_conflict_backtrack, time_limit_ms);
-    threads.emplace_back(runAlgorithm, ref(graph), m, "Forward Checking", forward_checking_backtrack, time_limit_ms);
+    // threads.emplace_back(runAlgorithm, ref(graph), m, "Simple Backtrack", simple_backtrack, time_limit_ms);
+    // threads.emplace_back(runAlgorithm, ref(graph), m, "Min Conflict", min_conflict_backtrack, time_limit_ms);
+    // threads.emplace_back(runAlgorithm, ref(graph), m, "Forward Checking", forward_checking_backtrack, time_limit_ms);
     threads.emplace_back(runAlgorithm, ref(graph), m, "Min Conflict + Forward Checking", min_conflict_forward_checking_backtrack, time_limit_ms);
-    threads.emplace_back(runAlgorithm, ref(graph), m, "MRV", mrv_backtrack, time_limit_ms);
-    threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + Min Conflict", mrv_min_conflict_backtrack, time_limit_ms);
-    threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + Forward Checking", mrv_forward_checking_backtrack, time_limit_ms);
+    // threads.emplace_back(runAlgorithm, ref(graph), m, "MRV", mrv_backtrack, time_limit_ms);
+    // threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + Min Conflict", mrv_min_conflict_backtrack, time_limit_ms);
+    // threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + Forward Checking", mrv_forward_checking_backtrack, time_limit_ms);
     threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + Min Conflict + Forward Checking", mrv_min_conflict_forward_checking_backtrack, time_limit_ms);
-    threads.emplace_back(runAlgorithm, ref(graph), m, "DH", dh_backtrack, time_limit_ms);
-    threads.emplace_back(runAlgorithm, ref(graph), m, "DH + Min Conflict", dh_min_conflict_backtrack, time_limit_ms);
-    threads.emplace_back(runAlgorithm, ref(graph), m, "DH + FC", dh_forward_checking_backtrack, time_limit_ms);
+    // threads.emplace_back(runAlgorithm, ref(graph), m, "DH", dh_backtrack, time_limit_ms);
+    // threads.emplace_back(runAlgorithm, ref(graph), m, "DH + Min Conflict", dh_min_conflict_backtrack, time_limit_ms);
+    // threads.emplace_back(runAlgorithm, ref(graph), m, "DH + FC", dh_forward_checking_backtrack, time_limit_ms);
     threads.emplace_back(runAlgorithm, ref(graph), m, "DH + Min Conflict + FC", dh_min_conflict_forward_checking_backtrack, time_limit_ms);
     threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + DH", mrv_dh_backtrack, time_limit_ms);
     threads.emplace_back(runAlgorithm, ref(graph), m, "MRV + DH + Forward Checking", mrv_dh_forward_checking_backtrack, time_limit_ms);
@@ -141,7 +150,8 @@ int main() {
             t.join();
 
     // 输出结果到 CSV 文件
-    ofstream csv("results.csv");
+    string resultname = "results" + filename.substr(8, filename.find(".") - 8) + ".csv";
+    ofstream csv(resultname);
     if (!csv) {
         cerr << "无法创建 CSV 文件！" << endl;
         return 1;
@@ -154,7 +164,7 @@ int main() {
             << res.duration_ms << endl;
     }
 
-    cout << "\n所有算法执行完成，结果已写入 results.csv：" << endl;
+    cout << "\n所有算法执行完成，结果已写入 " << resultname << endl;
     for (const auto& res : all_results) {
         cout << res.algorithm_name << ": "
              << (res.success ? "成功" : "超时/无解")

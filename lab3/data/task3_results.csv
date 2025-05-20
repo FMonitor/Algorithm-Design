@@ -1,0 +1,5 @@
+Algorithm,Success,100_200,
+Min Conflict + Forward Checking,Yes,1
+MRV + DH + MC + FC,Yes,1
+MRV + Min Conflict + Forward Checking,Yes,8
+DH + Min Conflict + FC,Yes,8

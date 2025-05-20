@@ -1,0 +1,8 @@
+Algorithm,Success,Time(ms)
+MRV + DH,Yes,5
+MRV + DH + MC,Yes,5
+MRV + DH + MC + FC,Yes,7
+MRV + DH + Forward Checking,Yes,131
+MRV + Min Conflict + Forward Checking,Yes,137
+DH + Min Conflict + FC,Yes,141
+Min Conflict + Forward Checking,No,10001

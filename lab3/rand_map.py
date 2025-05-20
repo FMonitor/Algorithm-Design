@@ -8,7 +8,7 @@ def generate_random_graph(n, m):
     
     edges = set()
     
-    with open("rand_map.col", "w") as f:
+    with open(f"rand_map_{n}_{m}.col", "w") as f:
         f.write(f"p edge {n} {m}\n") 
         
         while len(edges) < m:
@@ -19,8 +19,8 @@ def generate_random_graph(n, m):
                 f.write(f"e {u} {v}\n")  # 按 col 格式写入边信息
 
 if __name__ == "__main__":
-    n = 120
-    m = 3 * n
+    n = 500
+    m = 2 * n
     generate_random_graph(n, m)
     print(f"生成的图包含 {n} 个节点")
     print(f"生成的图包含 {m} 条边")
