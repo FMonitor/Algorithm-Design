@@ -1,4 +1,4 @@
-鸡蛋数量,楼层数量,暴力算法,朴素 DP,二分 DP,优化 DP
+Eggs,Floor,BruteForce,Na?ve_DP,Binary_DP,Optimized_DP
 1,5,5,5,5,5
 1,10,10,10,10,10
 1,15,15,15,15,15
