@@ -37,9 +37,19 @@ int countComponents(int n, const vector<vector<int>>& adj, set<pair<int, int>> r
 }
 
 int main() {
-    freopen("smallG.txt", "r", stdin);
+    // freopen("smallG.txt", "r", stdin);
     // freopen("mediumDG.txt", "r", stdin);
     // freopen("largeG.txt", "r", stdin);
+    // freopen("./large_graphs/large_graph_n9000_m10000.txt", "r", stdin);
+    // freopen("./large_graphs/large_graph_n9000_m20000.txt", "r", stdin);
+    // freopen("./large_graphs/large_graph_n9000_m30000.txt", "r", stdin);
+    // freopen("./large_graphs/large_graph_n9000_m40000.txt", "r", stdin);
+    // freopen("./large_graphs/large_graph_n9000_m50000.txt", "r", stdin);
+    // freopen("./large_graphs/large_graph_n9000_m60000.txt", "r", stdin);
+    freopen("./large_graphs/large_graph_n9000_m70000.txt", "r", stdin);
+    // freopen("./large_graphs/large_graph_n9000_m80000.txt", "r", stdin);
+    // freopen("./large_graphs/large_graph_n9000_m90000.txt", "r", stdin);
+    // freopen("./large_graphs/large_graph_n9000_m100000.txt", "r", stdin);
     int n, m;
     cin >> n >> m; 
 
@@ -62,7 +72,7 @@ int main() {
 
     // 原图连通分量数量
     int originalComponents = countComponents(n, adj, {});
-
+    cout << "原图连通分量数量: " << originalComponents << endl;
     int bridgeCount = 0;
 
     for (auto [u, v] : edges) {
@@ -80,7 +90,7 @@ int main() {
     // ===================
     auto end_time = high_resolution_clock::now();
 
-    auto duration_ms = duration_cast<milliseconds>(end_time - start_time);  
-    cout << "算法执行时间: " << duration_ms.count() << " 毫秒" << endl;
+    auto duration_us = duration_cast<microseconds>(end_time - start_time);
+    cout << "算法执行时间: " << duration_us.count() << " 微秒" << endl;
     return 0;
 }
